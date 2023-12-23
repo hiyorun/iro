@@ -4,9 +4,10 @@ project(iroha)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_subdirectory(externals/google-mcu)
+add_subdirectory(include/google-mcu)
+include_directories(include)
 
-file(GLOB_RECURSE SRCFILES CONFIGURE_DEPENDS "src/*.cpp")
+file(GLOB_RECURSE SRCFILES CONFIGURE_DEPENDS "src/*.cpp" "src/engine/*.cpp")
 
 add_executable(iroha ${SRCFILES})
 
