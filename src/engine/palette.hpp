@@ -8,11 +8,16 @@
 
 using namespace material_color_utilities;
 
+enum class PaletteMode { LIGHT, DARK };
+
 class Palette {
 private:
   Hct initialColour = Hct(0x00000000);
   DynamicScheme lightScheme = SchemeTonalSpot(initialColour, false, 0.0);
   DynamicScheme darkScheme = SchemeTonalSpot(initialColour, true, 0.0);
+  PaletteMode currentMode;
+
+  DynamicScheme getScheme(PaletteMode mode);
 
   std::unordered_map<std::string, std::function<Colour()>> colourMap = {
       {"primary", [this]() { return getPrimary(); }},
@@ -44,6 +49,8 @@ public:
   Palette(Argb argb);
   Palette(Hct hct, double contrastLevel);
   ~Palette();
+  void setMode(PaletteMode mode);
+  PaletteMode getMode();
   void setSchemes(Hct hct, double contrastLevel = 0.0);
   Colour getPrimary();
   Colour getOnPrimary();
