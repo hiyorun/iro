@@ -1,4 +1,5 @@
 #include "cpp/utils/utils.h"
+#include <map>
 #include <ostream>
 using namespace material_color_utilities;
 
@@ -8,5 +9,7 @@ public:
   Colour(Argb argb);
   ~Colour();
 
-  friend std::ostream& operator<<(std::ostream& os, const Colour& colour);
+  std::map<std::string, int> getJSON();
+
+  friend std::ostream &operator<<(std::ostream &os, const Colour &colour);
 };

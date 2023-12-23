@@ -1,12 +1,14 @@
-#include "palette.hpp"
+#include "engine/palette.hpp"
+#include "nlohmann/json.hpp"
+
 #include <iostream>
+#include <iterator>
 #include <ostream>
-#include <sstream>
 
 using namespace material_color_utilities;
 using namespace std;
+using json = nlohmann::json;
 
-// Function to convert string to Argb
 Argb stringToArgb(const string &str) {
   stringstream ss(str);
   Argb argb;
@@ -14,67 +16,57 @@ Argb stringToArgb(const string &str) {
   return argb;
 }
 
-void printAll(Palette palette) {
-  cout << "getPrimary" << endl;
-  cout << palette.getPrimary() << endl << endl;
-  cout << "getOnPrimary" << endl;
-  cout << palette.getOnPrimary() << endl << endl;
-  cout << "getSurface" << endl;
-  cout << palette.getSurface() << endl << endl;
-  cout << "getOnSurface" << endl;
-  cout << palette.getOnSurface() << endl << endl;
-  cout << "getSecondary" << endl;
-  cout << palette.getSecondary() << endl << endl;
-  cout << "getOnSecondary" << endl;
-  cout << palette.getOnSecondary() << endl << endl;
-  cout << "getPrimaryContainer" << endl;
-  cout << palette.getPrimaryContainer() << endl << endl;
-  cout << "getOnPrimaryContainer" << endl;
-  cout << palette.getOnPrimaryContainer() << endl << endl;
-  cout << "getSurfaceBright" << endl;
-  cout << palette.getSurfaceBright() << endl << endl;
-  cout << "getSurfaceDim" << endl;
-  cout << palette.getSurfaceDim() << endl << endl;
-  cout << "getSecondaryContainer" << endl;
-  cout << palette.getSecondaryContainer() << endl << endl;
-  cout << "getOnSecondaryContainer" << endl;
-  cout << palette.getOnSecondaryContainer() << endl << endl;
-  cout << "getSurfaceVariant" << endl;
-  cout << palette.getSurfaceVariant() << endl << endl;
-  cout << "getOnSurfaceVariant" << endl;
-  cout << palette.getOnSurfaceVariant() << endl << endl;
-  cout << "getTertiary" << endl;
-  cout << palette.getTertiary() << endl << endl;
-  cout << "getOnTertiary" << endl;
-  cout << palette.getOnTertiary() << endl << endl;
-  cout << "getTertiaryContainer" << endl;
-  cout << palette.getTertiaryContainer() << endl << endl;
-  cout << "getOnTertiaryContainer" << endl;
-  cout << palette.getOnTertiaryContainer() << endl << endl;
-  cout << "getError" << endl;
-  cout << palette.getError() << endl << endl;
-  cout << "getOnError" << endl;
-  cout << palette.getOnError() << endl << endl;
-  cout << "getErrorContainer" << endl;
-  cout << palette.getErrorContainer() << endl << endl;
-  cout << "getOnErrorContainer" << endl;
-  cout << palette.getOnErrorContainer() << endl << endl;
+void help() {
+  cout << "Usage: your_program [OPTIONS] <Argb_value> \n"
+       << "Options:\n"
+       << "  -h, --help\t\tDisplay this help message\n"
+       << "  -j, --json\t\tPrint JSON representation of the palette\n";
+}
+
+void printJson(Palette &palette) {
+  json jsonPalette;
+  const std::vector<std::string> colorNames = {
+      "primary",   "onPrimary",   "primaryContainer",   "onPrimaryContainer",
+      "secondary", "onSecondary", "secondaryContainer", "onSecondaryContainer",
+      "tertiary",  "onTertiary",  "tertiaryContainer",  "onTertiaryContainer",
+      "error",     "onError",     "errorContainer",     "onErrorContainer",
+      "surface",   "onSurface",   "surfaceVariant",     "onSurfaceVariant"};
+
+  for (const auto &colorName : colorNames) {
+    jsonPalette[colorName] = palette.getColourByName(colorName).getJSON();
+  }
+  cout << jsonPalette.dump(2) << endl;
 }
 
 int main(int argc, char *argv[]) {
-  // Check if there is at least one command-line argument
   if (argc < 2) {
-    cerr << "Usage: " << argv[0] << " <Argb_value>" << endl;
-    return 1; // Return an error code
+    help();
+    return 1;
   }
 
-  // Convert the first command-line argument to Argb
-  Argb argb = stringToArgb(argv[1]);
+  std::vector<std::string> args{argv + 1, argv + argc};
+  for (auto flag = args.begin(); flag != args.end(); flag++) {
+    if (flag->compare("-h") == 0 || flag->compare("--help") == 0) {
+      help();
+      return 0;
+    } else if (flag->compare("-j") == 0 || flag->compare("--json") == 0) {
+      if (std::next(flag) == args.end()) {
+        help();
 
-  // Create Palette with the Argb value
-  Palette palette(argb);
+        return 1;
+      }
+      Argb argb = stringToArgb(std::next(flag)->c_str());
+      Palette palette = Palette(argb);
+      printJson(palette);
 
-  // Print all the colours
-  printAll(palette);
-  return 0;
+      flag++;
+
+      continue;
+    } else {
+      std::cerr << "Unknown option '" << flag->c_str() << "'!\n";
+      help();
+
+      return 1;
+    }
+  }
 }

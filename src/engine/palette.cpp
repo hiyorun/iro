@@ -1,5 +1,6 @@
 #include "palette.hpp"
 #include "cpp/dynamiccolor/material_dynamic_colors.h"
+#include <iostream>
 
 Palette::Palette(Hct hct) {
   initialColour = hct;
@@ -91,4 +92,15 @@ Colour Palette::getErrorContainer() {
 }
 Colour Palette::getOnErrorContainer() {
   return Colour(MaterialDynamicColors::OnErrorContainer().GetArgb(lightScheme));
+}
+
+Colour Palette::getColourByName(const std::string &colourName) {
+  auto it = colourMap.find(colourName);
+  if (it != colourMap.end()) {
+    return (it->second)();
+  } else {
+    std::cerr << "Unknown colour name: " << colourName << std::endl;
+  }
+
+  return Colour(0xFF000000);
 }
