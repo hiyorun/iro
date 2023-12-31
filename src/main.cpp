@@ -1,13 +1,12 @@
-#include "engine/palette.hpp"
-#include "nlohmann/json.hpp"
+#include "output/output.hpp"
 
 #include <iostream>
 #include <iterator>
 #include <ostream>
+#include <sstream>
 
 using namespace material_color_utilities;
 using namespace std;
-using json = nlohmann::json;
 
 Argb stringToArgb(const string &str) {
   stringstream ss(str);
@@ -32,23 +31,6 @@ void help() {
        << "Examples:\n"
        << "  iroha -j --colour ff902922\n"
        << "  iroha -d -j -c ff902922\n";
-}
-
-void printJson(Palette &palette) {
-  json jsonPalette;
-  const std::vector<std::string> colorNames = {
-      "primary",   "onPrimary",   "primaryContainer",   "onPrimaryContainer",
-      "secondary", "onSecondary", "secondaryContainer", "onSecondaryContainer",
-      "tertiary",  "onTertiary",  "tertiaryContainer",  "onTertiaryContainer",
-      "error",     "onError",     "errorContainer",     "onErrorContainer",
-      "surface",   "onSurface",   "surfaceVariant",     "onSurfaceVariant"};
-
-  for (const auto &colorName : colorNames) {
-    jsonPalette[colorName] = palette.getColourByName(colorName).getJSON();
-  }
-  cout << jsonPalette.dump(-1, ' ', false,
-                           nlohmann::json::error_handler_t::replace)
-       << endl;
 }
 
 int main(int argc, char *argv[]) {
