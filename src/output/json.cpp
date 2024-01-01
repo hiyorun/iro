@@ -6,7 +6,7 @@
 using namespace std;
 using json = nlohmann::json;
 
-void printJson(Palette &palette) {
+json getJson(Palette &palette) {
   json jsonPalette;
   const std::vector<std::string> colorNames = {
       "primary",   "onPrimary",   "primaryContainer",   "onPrimaryContainer",
@@ -16,9 +16,15 @@ void printJson(Palette &palette) {
       "surface",   "onSurface",   "surfaceVariant",     "onSurfaceVariant"};
 
   for (const auto &colorName : colorNames) {
-    jsonPalette[colorName] = palette.getColourByName(colorName).getJSON();
+    jsonPalette[colorName] = palette.getColourByName(colorName).formatJson();
   }
-  cout << jsonPalette.dump(-1, ' ', false,
+  return jsonPalette;
+}
+
+void printJson(Palette &palette, bool prettier) {
+  json jsonPalette = getJson(palette);
+  int indentation = prettier ? 2 : -1;
+  cout << jsonPalette.dump(indentation, ' ', false,
                            nlohmann::json::error_handler_t::replace)
        << endl;
 }
