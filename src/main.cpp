@@ -8,6 +8,10 @@
 using namespace material_color_utilities;
 using namespace std;
 
+struct {
+  string input, output = "";
+} path;
+
 Argb stringToArgb(const string &str) {
   stringstream ss(str);
   Argb argb;
@@ -24,6 +28,7 @@ void help() {
        << "  -h, --help\t\t\tDisplay this help message\n"
        << "  -i, --inja <template-path>\tPrint Inja template for the palette\n"
        << "  -j, --json\t\t\tPrint JSON representation of the palette\n"
+       << "  -i, --inja <template-path>\tPrint Inja template for the palette\n"
        << "\n"
        << "Examples:\n"
        << "  iroha -j --colour ff902922\n"
@@ -37,9 +42,11 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  std::vector<std::string> args{argv + 1, argv + argc};
-  std::vector<std::function<void(Palette &)>> stdOps;
-  std::vector<std::function<void(Palette &)>> outOps;
+  Argb argb;
+
+  vector<string> args{argv + 1, argv + argc};
+  vector<function<void(Palette &)>> stdOps;
+  vector<function<void(Palette &)>> outOps;
 
   for (auto flag = args.begin(); flag != args.end(); flag++) {
     if (*flag == "-h" || *flag == "--help") {
@@ -49,35 +56,50 @@ int main(int argc, char *argv[]) {
       stdOps.push_back(
           [](Palette &palette) { palette.setMode(PaletteMode::DARK); });
     } else if (*flag == "-i" || *flag == "--inja") {
-      if (std::next(flag) == args.end()) {
+      if (next(flag) == args.end()) {
         help();
         return 1;
       }
-      outOps.push_back([flag](Palette &palette) {
-        InjaTpl inja = InjaTpl(std::next(flag)->c_str(), "./output.css");
-        inja.printInja(palette);
-      });
+      path.input = next(flag)->c_str();
+      if (path.output != "") {
+        outOps.push_back([](Palette &palette) {
+          InjaTpl inja = InjaTpl(path.input, path.output);
+          inja.printInja(palette);
+        });
+      }
       flag++;
     } else if (*flag == "-j" || *flag == "--json") {
       outOps.push_back([](Palette &palette) { printJson(palette); });
     } else if (*flag == "-f" || *flag == "--formatted-json") {
       outOps.push_back([](Palette &palette) { printJson(palette, true); });
-    } else if (*flag == "-c" || *flag == "--colour") {
-      if (std::next(flag) == args.end()) {
+    } else if (*flag == "-o" || *flag == "--output") {
+      if (next(flag) == args.end()) {
         help();
         return 1;
       }
-      Argb argb = stringToArgb(std::next(flag)->c_str());
-      stdOps.push_back([argb](Palette &palette) { palette = Palette(argb); });
+      path.output = next(flag)->c_str();
+      flag++;
+      if (path.input != "") {
+        outOps.push_back([](Palette &palette) {
+          InjaTpl inja = InjaTpl(path.input, path.output);
+          inja.printInja(palette);
+        });
+      }
+    } else if (*flag == "-c" || *flag == "--colour") {
+      if (next(flag) == args.end()) {
+        help();
+        return 1;
+      }
+      argb = stringToArgb(next(flag)->c_str());
       flag++;
     } else {
-      std::cerr << "Unknown option '" << flag->c_str() << "'!\n";
+      cerr << "Unknown option '" << flag->c_str() << "'!\n";
       help();
       return 1;
     }
   }
 
-  Palette palette(Hct(0x00000000));
+  Palette palette((Hct(argb)));
   for (const auto &operation : stdOps) {
     operation(palette);
   }
