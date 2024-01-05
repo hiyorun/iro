@@ -42,6 +42,8 @@ private:
       {"onError", [this]() { return getOnError(); }},
       {"errorContainer", [this]() { return getErrorContainer(); }},
       {"onErrorContainer", [this]() { return getOnErrorContainer(); }},
+      {"shadow", [this]() { return getShadow(); }},
+      {"outline", [this]() { return getOutline(); }},
   };
 
 public:
@@ -74,5 +76,7 @@ public:
   Colour getOnError();
   Colour getErrorContainer();
   Colour getOnErrorContainer();
+  Colour getShadow();
+  Colour getOutline();
   Colour getColourByName(const std::string &colourName);
 };

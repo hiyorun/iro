@@ -114,6 +114,14 @@ Colour Palette::getOnErrorContainer() {
   return Colour(MaterialDynamicColors::OnErrorContainer().GetArgb(
       getScheme(currentMode)));
 }
+Colour Palette::getShadow() {
+  return Colour(MaterialDynamicColors::Shadow().GetArgb(
+      getScheme(currentMode)));
+}
+Colour Palette::getOutline() {
+  return Colour(MaterialDynamicColors::Outline().GetArgb(
+      getScheme(currentMode)));
+}
 
 Colour Palette::getColourByName(const std::string &colourName) {
   auto it = colourMap.find(colourName);

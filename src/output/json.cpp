@@ -13,7 +13,7 @@ json getJson(Palette &palette) {
       "secondary", "onSecondary", "secondaryContainer", "onSecondaryContainer",
       "tertiary",  "onTertiary",  "tertiaryContainer",  "onTertiaryContainer",
       "error",     "onError",     "errorContainer",     "onErrorContainer",
-      "surface",   "onSurface",   "surfaceVariant",     "onSurfaceVariant"};
+      "surface",   "onSurface",   "surfaceVariant",     "onSurfaceVariant", "shadow", "outline"};
 
   for (const auto &colorName : colorNames) {
     jsonPalette[colorName] = palette.getColourByName(colorName).formatJson();
