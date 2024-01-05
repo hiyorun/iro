@@ -23,6 +23,7 @@ private:
       {"primary", [this]() { return getPrimary(); }},
       {"onPrimary", [this]() { return getOnPrimary(); }},
       {"surface", [this]() { return getSurface(); }},
+      {"surfaceContainer", [this]() { return getSurfaceContainer(); }},
       {"onSurface", [this]() { return getOnSurface(); }},
       {"secondary", [this]() { return getSecondary(); }},
       {"onSecondary", [this]() { return getOnSecondary(); }},
@@ -56,8 +57,6 @@ public:
   void setSchemes(Hct hct, double contrastLevel = 0.0);
   Colour getPrimary();
   Colour getOnPrimary();
-  Colour getSurface();
-  Colour getOnSurface();
   Colour getSecondary();
   Colour getOnSecondary();
   Colour getPrimaryContainer();
@@ -66,6 +65,9 @@ public:
   Colour getSurfaceDim();
   Colour getSecondaryContainer();
   Colour getOnSecondaryContainer();
+  Colour getSurface();
+  Colour getOnSurface();
+  Colour getSurfaceContainer();
   Colour getSurfaceVariant();
   Colour getOnSurfaceVariant();
   Colour getTertiary();

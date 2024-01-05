@@ -35,14 +35,6 @@ Colour Palette::getOnPrimary() {
   return Colour(
       MaterialDynamicColors::OnPrimary().GetArgb(getScheme(currentMode)));
 }
-Colour Palette::getSurface() {
-  return Colour(
-      MaterialDynamicColors::Surface().GetArgb(getScheme(currentMode)));
-}
-Colour Palette::getOnSurface() {
-  return Colour(
-      MaterialDynamicColors::OnSurface().GetArgb(getScheme(currentMode)));
-}
 Colour Palette::getSecondary() {
   return Colour(
       MaterialDynamicColors::Secondary().GetArgb(getScheme(currentMode)));
@@ -74,6 +66,18 @@ Colour Palette::getSecondaryContainer() {
 Colour Palette::getOnSecondaryContainer() {
   return Colour(MaterialDynamicColors::OnSecondaryContainer().GetArgb(
       getScheme(currentMode)));
+}
+Colour Palette::getSurface() {
+  return Colour(
+      MaterialDynamicColors::Surface().GetArgb(getScheme(currentMode)));
+}
+Colour Palette::getOnSurface() {
+  return Colour(
+      MaterialDynamicColors::OnSurface().GetArgb(getScheme(currentMode)));
+}
+Colour Palette::getSurfaceContainer() {
+  return Colour(
+      MaterialDynamicColors::SurfaceContainer().GetArgb(getScheme(currentMode)));
 }
 Colour Palette::getSurfaceVariant() {
   return Colour(
@@ -115,12 +119,12 @@ Colour Palette::getOnErrorContainer() {
       getScheme(currentMode)));
 }
 Colour Palette::getShadow() {
-  return Colour(MaterialDynamicColors::Shadow().GetArgb(
-      getScheme(currentMode)));
+  return Colour(
+      MaterialDynamicColors::Shadow().GetArgb(getScheme(currentMode)));
 }
 Colour Palette::getOutline() {
-  return Colour(MaterialDynamicColors::Outline().GetArgb(
-      getScheme(currentMode)));
+  return Colour(
+      MaterialDynamicColors::Outline().GetArgb(getScheme(currentMode)));
 }
 
 Colour Palette::getColourByName(const std::string &colourName) {

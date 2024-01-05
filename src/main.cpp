@@ -1,4 +1,3 @@
-#include <cstdint>
 #define MAGICKCORE_HDRI_ENABLE 1
 #include "cpp/quantize/celebi.h"
 #include "cpp/quantize/wsmeans.h"
@@ -6,6 +5,7 @@
 #include "cpp/utils/utils.h"
 #include "output/output.hpp"
 #include <Magick++.h>
+#include <cstdint>
 #include <vector>
 
 #include <iostream>
@@ -53,7 +53,7 @@ void help() {
        << "  iroha -m poisonous-red-fluff.png -i template.css -o output.css\n";
 }
 
-vector<Argb> magicc(string path) {
+vector<Argb> magicc(filesystem::path path) {
   vector<Argb> colours;
   Image image(path);
   image.resize(Magick::Geometry(256, 256));

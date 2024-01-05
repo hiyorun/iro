@@ -8,12 +8,29 @@ using json = nlohmann::json;
 
 json getJson(Palette &palette) {
   json jsonPalette;
-  const std::vector<std::string> colorNames = {
-      "primary",   "onPrimary",   "primaryContainer",   "onPrimaryContainer",
-      "secondary", "onSecondary", "secondaryContainer", "onSecondaryContainer",
-      "tertiary",  "onTertiary",  "tertiaryContainer",  "onTertiaryContainer",
-      "error",     "onError",     "errorContainer",     "onErrorContainer",
-      "surface",   "onSurface",   "surfaceVariant",     "onSurfaceVariant", "shadow", "outline"};
+  const std::vector<std::string> colorNames = {"primary",
+                                               "onPrimary",
+                                               "primaryContainer",
+                                               "onPrimaryContainer",
+                                               "secondary",
+                                               "onSecondary",
+                                               "secondaryContainer",
+                                               "onSecondaryContainer",
+                                               "tertiary",
+                                               "onTertiary",
+                                               "tertiaryContainer",
+                                               "onTertiaryContainer",
+                                               "error",
+                                               "onError",
+                                               "errorContainer",
+                                               "onErrorContainer",
+                                               "surface",
+                                               "surfaceContainer",
+                                               "onSurface",
+                                               "surfaceVariant",
+                                               "onSurfaceVariant",
+                                               "shadow",
+                                               "outline"};
 
   for (const auto &colorName : colorNames) {
     jsonPalette[colorName] = palette.getColourByName(colorName).formatJson();
