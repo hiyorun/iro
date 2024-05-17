@@ -2,6 +2,12 @@
 
 A template based colour palette generator. Using Google's Material Colour Utilities under the hood.
 
+## Todos
+- Batch template processings
+- Template bracket escaping
+- Add debug flags
+- Make logs more human readable
+
 ## How to build
 1. Create a directory called `build`
 2. Change to that directory, and then `cmake ../`
